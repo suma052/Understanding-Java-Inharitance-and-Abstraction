@@ -1,0 +1,141 @@
+import java.util.ArrayList;
+
+// Abstract class
+abstract class UniversityMember {
+    protected int memberId;
+    protected String fullName;
+
+    UniversityMember(int memberId, String fullName) {
+        this.memberId = memberId;
+        this.fullName = fullName;
+    }
+
+    void showDetails() {
+        System.out.println("Member ID : " + memberId);
+        System.out.println("Name      : " + fullName);
+    }
+
+    // Abstract method
+    abstract void performDuty();
+}
+
+// Parent class
+class StaffMember extends UniversityMember {
+    protected double monthlySalary;
+
+    StaffMember(int memberId, String fullName, double monthlySalary) {
+        super(memberId, fullName);
+        this.monthlySalary = monthlySalary;
+    }
+
+    void displaySalary() {
+        System.out.println("Salary : " + monthlySalary);
+    }
+
+    @Override
+    void performDuty() {
+        System.out.println(fullName + " performs general staff responsibilities.");
+    }
+}
+
+// Child class
+class FacultyMember extends StaffMember {
+    protected String facultyName;
+
+    FacultyMember(int memberId, String fullName,
+                  double monthlySalary, String facultyName) {
+        super(memberId, fullName, monthlySalary);
+        this.facultyName = facultyName;
+    }
+
+    void displayFaculty() {
+        System.out.println("Faculty : " + facultyName);
+    }
+
+    @Override
+    void performDuty() {
+        System.out.println(fullName + " teaches courses and guides students.");
+    }
+}
+
+// Child class
+class Professor extends FacultyMember {
+    private String researchField;
+    private int publishedPapers;
+
+    Professor(int memberId, String fullName,
+              double monthlySalary, String facultyName,
+              String researchField, int publishedPapers) {
+
+        super(memberId, fullName, monthlySalary, facultyName);
+        this.researchField = researchField;
+        this.publishedPapers = publishedPapers;
+    }
+
+    // Professor method
+    void displayResearchDetails() {
+        System.out.println("Research Field   : " + researchField);
+        System.out.println("Published Papers : " + publishedPapers);
+    }
+
+    @Override
+    void performDuty() {
+        System.out.println(fullName + " conducts research and teaches advanced subjects.");
+    }
+}
+
+// Another subclass
+class OfficeAdministrator extends StaffMember {
+    private String officeUnit;
+
+    OfficeAdministrator(int memberId, String fullName,
+                        double monthlySalary, String officeUnit) {
+
+        super(memberId, fullName, monthlySalary);
+        this.officeUnit = officeUnit;
+    }
+
+    @Override
+    void performDuty() {
+        System.out.println(fullName + " manages university administrative operations.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+
+        ArrayList<UniversityMember> staffMembers = new ArrayList<>();
+
+        staffMembers.add(new Professor(
+                101,
+                "Dr. Mahmud Hasan",
+                120000,
+                "ICT",
+                "Artificial Intelligence",
+                28));
+
+        staffMembers.add(new OfficeAdministrator(
+                201,
+                "Sabbir Ahmed",
+                50000,
+                "Academic Affairs"));
+
+        // Dynamic Binding
+        for (UniversityMember member : staffMembers) {
+            member.showDetails();
+            member.performDuty();
+            System.out.println();
+        }
+
+        // Downcasting
+        for (UniversityMember member : staffMembers) {
+
+            if (member instanceof Professor) {
+
+                Professor professor = (Professor) member;
+
+                professor.displayResearchDetails();
+            }
+        }
+    }
+}
